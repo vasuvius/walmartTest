@@ -27,12 +27,56 @@ fetch(url)
   });
 
 function appendData(data){
+    //
+    // this function is called after finding the data from the GET request:
+    // -displays data using a for loops
+    // -creates a modal for each div element as well
     var dataTable = document.getElementById("walmartIssues");
     for (i = 0; i < globalData.length; i++){
-        // add all issues to the page
-        var div = document.createElement("div");
-        div.innerHTML = 'Title: ' + data[i].title + ' Number: ' + data[i].number + ' State: ' + data[i].state;
+        // loop add all issues to the page
+        var div = document.createElement("div"); //creates the new div
+        div.innerHTML = 'Title: ' + data[i].title + ' Number: ' + data[i].number + ' State: ' + data[i].state; //adds the title, number, and state to every ID!
+        div.classList.add("issue"); //this adds the className= "issue" to every created div
+
+        // to operate the modal
+        // give the div a child class named modal, ID is the data[i].number
+        // the give each an onClick by calling that ID, modeled through css
+        var modal = document.createElement("div");
+        var modalContent = document.createElement("div");
+        var closeButton = document.createElement("span");
+
+        closeButton.classList.add("close");
+        closeButton.id = data[i].number.toString();
+        closeButton.innerHTML = "&times;";
+
+        var text = document.createElement("p");
+        text.innerHTML = "info on the issue!";
+        modal.classList.add("modal");
+        modalContent.classList.add("modal-content");
+        modalContent.appendChild(closeButton);
+        modalContent.appendChild(text);
+        modal.appendChild(modalContent);
+
+        
+        div.onclick = function () {
+            // when the div is clicked, make the modal pop up with the 
+            modal.style.display = "block";
+        }
+        window.onclick = function(event){
+            if (event.target == modal){
+                modal.style.display = "none";
+            }
+
+        }
+
+        div.appendChild(modal);
         dataTable.appendChild(div);
+
+        var closeButtonFunctionality = document.getElementById(data[i].number.toString());
+        closeButtonFunctionality.onclick = function () {
+            console.log("clicked");
+            modal.style.display = "none";
+        }
     }
 }
 document.getElementById('pagination').onclick = function() {
