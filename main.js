@@ -50,7 +50,7 @@ fetch(url)
   function showIssues(lower, upper) {
       // -----
       // this main function shows 10 issues at a time. It runs a for loop which creates all needed elements
-      // the foor loop then creates onclick functionality for the issue class and closebutton class
+      // the for loop then creates onclick functionality for the issue class and closebutton class
       // maps parts to unique issue ID's so that onclick can be found through elementID.
       // -----
     var dataTable = document.getElementById("walmartIssues");
@@ -67,7 +67,6 @@ fetch(url)
         div.innerHTML = 'Title: ' + globalData[lower].title + '<br> Number: ' + globalData[lower].number + '<br> State: ' + globalData[lower].state; //adds the title, number, and state to every ID!
         div.classList.add("issue"); //this adds the className= "issue" to every created div
 
-      
         // make the modal for each issue, and modal-content
         // give it "id" as id
         var modal = document.createElement("div");
@@ -84,7 +83,7 @@ fetch(url)
         closeButton.innerHTML = "Exit";
 
         var text = document.createElement("p");
-        text.innerHTML = "Created at: " + globalData[lower].created_at + " by " + globalData[lower].user.login +  ".<br> " + "<br> Request at: " + globalData[lower].url;
+        text.innerHTML = "Title: " +globalData[lower].title+ " <br> <br> Created at: " + globalData[lower].created_at + " by " + globalData[lower].user.login +  ".<br> ID:"+ globalData[lower].id + "<br> Request at: " + globalData[lower].url;
         text.innerHTML += "<br> Comments URL: " + globalData[lower].comments_url + "<br> Number of Comments: " + globalData[lower].comments;
         
         
