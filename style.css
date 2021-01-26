@@ -1,6 +1,17 @@
+#walmartIssues{
+    display:flex;
+    justify-content: center;
+    flex-direction: column;
+    
+}
 .issue{
     display:flex;
+    width: 40%;
     justify-content: left;
+    outline:solid;
+    outline-width: 1px;
+    outline-color: black;
+    border-radius: 20px 20px 20px 20px;
 }
 .issue:hover{
     cursor:pointer;
@@ -35,4 +46,10 @@
     overflow: auto; /* Enable scroll if needed */
     background-color: rgb(0,0,0); /* Fallback color */
     background-color: rgba(0,0,0,0.4); /* Black w/ opacity */
+  }
+  .close {
+    color: #aaaaaa;
+    float: right;
+    font-size: 28px;
+    font-weight: bold;
   }

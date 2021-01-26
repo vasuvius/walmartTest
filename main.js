@@ -10,6 +10,8 @@
 // add className Modal to the objexta?
 let url = 'https://api.github.com/repos/walmartlabs/thorax/issues?limit=5';
 let globalData;
+let lowerRangeOfIssues = 0;
+let upperRangeOfIssues = 10;
 fetch(url)
   .then(function (response) {
     // All Json data found here
@@ -18,14 +20,61 @@ fetch(url)
   .then(function (data){
       // apply a function to the data!
       globalData = data;
-      console.log(globalData);
-      appendData(data);
+      showIssues(lowerRangeOfIssues,upperRangeOfIssues);
   })
   .catch(function (err) {
     // If an error occured, you will catch it here
     console.log(err);
   });
 
+  function showIssues(lower, upper) {
+    var dataTable = document.getElementById("walmartIssues");
+    for (lower; lower < upper; lower++){
+        console.log(lower);
+        // loop add all issues to the page
+        var div = document.createElement("div"); //creates the new div
+        div.innerHTML = 'Title: ' + globalData[lower].title + '<br> Number: ' + globalData[lower].number + '<br State: ' + globalData[lower].state; //adds the title, number, and state to every ID!
+        div.classList.add("issue"); //this adds the className= "issue" to every created div
+
+        // to operate the modal
+        // give the div a child class named modal, ID is the data[i].number
+        // the give each an onClick by calling that ID, modeled through css
+        var modal = document.createElement("div");
+        var modalContent = document.createElement("div");
+        var closeButton = document.createElement("span");
+
+        closeButton.classList.add("close");
+        closeButton.id = globalData[lower].number.toString();
+        closeButton.innerHTML = "&times;";
+
+        var text = document.createElement("p");
+        text.innerHTML = "info on the issue!";
+        modal.classList.add("modal");
+        modalContent.classList.add("modal-content");
+        modalContent.appendChild(closeButton);
+        modalContent.appendChild(text);
+        modal.appendChild(modalContent);
+
+        
+        div.onclick = function () {
+            // when the div is clicked, make the modal pop up with the 
+            modal.style.display = "block";
+        }
+        window.onclick = function(event){
+            if (event.target == modal){
+                modal.style.display = 'none';
+            }
+
+        }
+        div.appendChild(modal);
+        dataTable.appendChild(div);
+
+        var closeButtonFunctionality = document.getElementById(globalData[lower].number.toString());
+        closeButtonFunctionality.onclick = function () {
+            modal.style.display = 'none';
+        }
+    }
+}
 function appendData(data){
     //
     // this function is called after finding the data from the GET request:
@@ -35,7 +84,7 @@ function appendData(data){
     for (i = 0; i < globalData.length; i++){
         // loop add all issues to the page
         var div = document.createElement("div"); //creates the new div
-        div.innerHTML = 'Title: ' + data[i].title + ' Number: ' + data[i].number + ' State: ' + data[i].state; //adds the title, number, and state to every ID!
+        div.innerHTML = 'Title: ' + data[i].title + '<br> Number: ' + data[i].number + '<br State: ' + data[i].state; //adds the title, number, and state to every ID!
         div.classList.add("issue"); //this adds the className= "issue" to every created div
 
         // to operate the modal
@@ -64,7 +113,7 @@ function appendData(data){
         }
         window.onclick = function(event){
             if (event.target == modal){
-                modal.style.display = "none";
+                modal.style.display = 'none';
             }
 
         }
@@ -74,8 +123,7 @@ function appendData(data){
 
         var closeButtonFunctionality = document.getElementById(data[i].number.toString());
         closeButtonFunctionality.onclick = function () {
-            console.log("clicked");
-            modal.style.display = "none";
+            modal.style.display = 'none';
         }
     }
 }
@@ -89,15 +137,33 @@ document.getElementById('pagination').onclick = function() {
         pagination.appendChild(div);
     }
 }
-function display10(upper, lower){
-    var pagination = document.getElementById("pagination");
-    for (lower; lower < upper; lower++) {
-        var div = document.createElement("div");
-        div.innerHTML = 'Title: ' + globalData[lower].title + ' Number: ' + globalData[lower].number + ' State: ' + globalData[lower].state;
-        pagination.appendChild(div);
-        console.log("out");
-    }
-}
-display10(0,10);
 
+document.getElementById('next').onClick = function() {
+    if (upperRangeOfIssues + 10 > globalData.length){
+        // overflow, cap at the data.length!
+        lowerRangeOfIssues = globalData.length - 10;
+        upperRangeOfIssues = globalData.lengt;
+    }
+    else{
+        // no overflow, add 10 
+        lowerRangeOfIssues += 10;
+        upperRangeOfIssues += 10;
+    }
+    // call 10 elements
+    showIssues(lowerRangeOfIssues,upperRangeOfIssues);
+}
+document.getElementById('previous').onClick = function() {
+    if (lowerRangeOfIssues -10 < 0){
+        // overflow, must cap at 0
+        lowerRangeOfIssues = 0;
+        upperRangeOfIssues = 10;
+    }
+    else{
+        // no overflow, minus 10
+        lowerRangeOfIssues -= 10;
+        upperRangeOfIssues -= 10;
+    }
+    // call 10 elements
+    showIssues(lowerRangeOfIssues,upperRangeOfIssues);
+}
 
