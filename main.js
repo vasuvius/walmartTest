@@ -44,6 +44,7 @@ fetch(url)
       // gives the close button its functionality!
       // called in showIssues to reutrn onClick functionality
         document.getElementById(globalData[i].id.toString()).style.display = "none";
+        event.stopPropagation();
       }
 }
   function showIssues(lower, upper) {
@@ -59,7 +60,6 @@ fetch(url)
       }
     for (lower; lower < upper; lower++){
         // loop adds all issues to the page
-
         // div holds the outside issue data AND the modal
         // give it "number" as id
         var div = document.createElement("div");
@@ -97,9 +97,8 @@ fetch(url)
         dataTable.appendChild(div);
 
         // add onclick functonality for closeButton and the issue div
-        document.getElementById(globalData[lower].node_id.toString()).onclick = closeButtonClick(lower);
         document.getElementById(globalData[lower].number.toString()).onclick = divClick(lower);
-       
+        document.getElementById(globalData[lower].node_id.toString()).onclick = closeButtonClick(lower);
     }
 }
 document.getElementById('next').onclick = function() {
