@@ -10,8 +10,8 @@
 // add className Modal to the objexta?
 let url = 'https://api.github.com/repos/walmartlabs/thorax/issues?limit=5';
 let globalData;
-let lowerRangeOfIssues = 1;
-let upperRangeOfIssues = 11;
+let lowerRangeOfIssues = 0;
+let upperRangeOfIssues = 10;
 fetch(url)
   .then(function (response) {
     // All Json data found here
@@ -26,35 +26,31 @@ fetch(url)
     // If an error occured, you will catch it here
     console.log(err);
   });
-  function divClick(div, i){
+  function divClick(i){
       // gives the div its ability to activate the modal
     return function(){
         console.log('this worked!');
         console.log(globalData[i].id.toString());
         document.getElementById(globalData[i].id.toString()).style.display = "block";
         }
-        // window.onclick = function(event){
-        //     if (event.target == modal){
-        //         modal.style.display = 'none';
-        //     }
-        // }
         // var closeButtonFunctionality = document.getElementById(globalData[lower].number.toString());
         // closeButtonFunctionality.onclick = function () {
         //     modal.style.display = 'none'
         // }
-    }
-  function closeButtonClick(closeButton, i){
-      // gives the close button its functionality!
+}
+  function closeButtonClick(i){
       return function(){
-            closeButton.onclick = function() {
-            console.log("clocled");
-            document.getElementById(globalData[i].id.toString()).style.display = "none";
-          }
+      // gives the close button its functionality!
+        console.log("close button clicked");
+        console.log(globalData[i].id.toString());
+        document.getElementById(globalData[i].id.toString()).style.display = "none";
       }
-  }
-  
+}
   function showIssues(lower, upper) {
     var dataTable = document.getElementById("walmartIssues");
+    while (dataTable.firstChild) {
+        dataTable.removeChild(dataTable.lastChild);
+      }
     for (lower; lower < upper; lower++){
         console.log(globalData[lower].number.toString())
         console.log(lower);
@@ -71,14 +67,15 @@ fetch(url)
         var modal = document.createElement("div");
         modal.id = globalData[lower].id.toString(); // modal holds unique ID number
         var modalContent = document.createElement("div");
-        var closeButton = document.createElement("span");
+        var closeButton = document.createElement("div");
 
         closeButton.classList.add("close");
         closeButton.id = globalData[lower].node_id.toString();
-        closeButton.innerHTML = "&times;";
+        closeButton.innerHTML = "Exit";
 
         var text = document.createElement("p");
         text.innerHTML = "Created at: " + globalData[lower].created_at + " by " + globalData[lower].user.login +  ".<br> " + "<br> Request at: " + globalData[lower].url;
+        text.innerHTML += "<br> Comments URL: " + globalData[lower].comments_url + "<br> Number of Comments: " + globalData[lower].comments;
         modal.classList.add("modal");
         modalContent.classList.add("modal-content");
         modalContent.appendChild(closeButton);
@@ -87,16 +84,24 @@ fetch(url)
 
         div.appendChild(modal);
         dataTable.appendChild(div);
-        document.getElementById(globalData[lower].number.toString()).onclick = divClick(div, lower);
-        document.getElementById(globalData[lower].node_id.toString()).onclick = closeButtonClick(closeButton, lower);
+        window.onclick = function(event){
+            if (event.target == modal){
+                modal.style.display = 'none';
+            }
+        }
+        //node_id = closeButton
+        // number = div
+        // id = modal
+        document.getElementById(globalData[lower].number.toString()).onclick = divClick(lower);
+        document.getElementById(globalData[lower].id.toString()).onclick = closeButtonClick(lower);
     }
 }
-document.getElementById('next').onClick = function() {
+document.getElementById('next').onclick = function() {
     console.log("next clicked");
     if (upperRangeOfIssues + 10 > globalData.length){
         // overflow, cap at the data.length!
         lowerRangeOfIssues = globalData.length - 10;
-        upperRangeOfIssues = globalData.lengt;
+        upperRangeOfIssues = globalData.length;
     }
     else{
         // no overflow, add 10 
@@ -106,9 +111,9 @@ document.getElementById('next').onClick = function() {
     // call 10 elements
     showIssues(lowerRangeOfIssues,upperRangeOfIssues);
 }
-document.getElementById('previous').onClick = function() {
+document.getElementById('previous').onclick = function() {
     console.log("clicked previous");
-    if (lowerRangeOfIssues -10 < 0){
+    if (lowerRangeOfIssues - 10 < 0){
         // overflow, must cap at 0
         lowerRangeOfIssues = 0;
         upperRangeOfIssues = 10;
@@ -121,56 +126,3 @@ document.getElementById('previous').onClick = function() {
     // call 10 elements
     showIssues(lowerRangeOfIssues,upperRangeOfIssues);
 }
-
-// function appendData(data){
-//     //
-//     // this function is called after finding the data from the GET request:
-//     // -displays data using a for loops
-//     // -creates a modal for each div element as well
-//     var dataTable = document.getElementById("walmartIssues");
-//     for (i = 0; i < globalData.length; i++){
-//         // loop add all issues to the page
-//         var div = document.createElement("div"); //creates the new div
-//         div.innerHTML = 'Title: ' + data[i].title + '<br> Number: ' + data[i].number + '<br> State: ' + data[i].state; //adds the title, number, and state to every ID!
-//         div.classList.add("issue"); //this adds the className= "issue" to every created div
-
-//         // to operate the modal
-//         // give the div a child class named modal, ID is the data[i].number
-//         // the give each an onClick by calling that ID, modeled through css
-//         var modal = document.createElement("div");
-//         var modalContent = document.createElement("div");
-//         var closeButton = document.createElement("span");
-
-//         closeButton.classList.add("close");
-//         closeButton.id = data[i].number.toString();
-//         closeButton.innerHTML = "&times;";
-
-//         var text = document.createElement("p");
-//         text.innerHTML = "info on the issue!";
-//         modal.classList.add("modal");
-//         modalContent.classList.add("modal-content");
-//         modalContent.appendChild(closeButton);
-//         modalContent.appendChild(text);
-//         modal.appendChild(modalContent);
-
-        
-//         div.onclick = function () {
-//             // when the div is clicked, make the modal pop up with the 
-//             modal.style.display = "block";
-//         }
-//         window.onclick = function(event){
-//             if (event.target == modal){
-//                 modal.style.display = 'none';
-//             }
-
-//         }
-
-//         div.appendChild(modal);
-//         dataTable.appendChild(div);
-
-//         var closeButtonFunctionality = document.getElementById(data[i].number.toString());
-//         closeButtonFunctionality.onclick = function () {
-//             modal.style.display = 'none';
-//         }
-//     }
-// }

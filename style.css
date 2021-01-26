@@ -12,6 +12,7 @@
     outline-width: 1px;
     outline-color: black;
     border-radius: 20px 20px 20px 20px;
+    margin: 5px;
 }
 .issue:hover{
     cursor:pointer;
@@ -42,7 +43,7 @@
     left: 0;
     top: 0;
     width: 100%; /* Full width */
-    height: 100%; /* Full height */
+    height: 20%; /* Full height */
     overflow: auto; /* Enable scroll if needed */
     background-color: rgb(0,0,0); /* Fallback color */
     background-color: rgba(0,0,0,0.4); /* Black w/ opacity */
