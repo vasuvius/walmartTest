@@ -43,8 +43,6 @@ fetch(url)
       return function(){
       // gives the close button its functionality!
       // called in showIssues to reutrn onClick functionality
-        console.log("close button clicked");
-        console.log(document.getElementById(globalData[i].id.toString()));
         document.getElementById(globalData[i].id.toString()).style.display = "none";
       }
 }
