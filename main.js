@@ -1,13 +1,3 @@
-// PROBLEMS TO SOLVE:
-//PAGINATION:
-// idea1: 
-// limit data pulls to only a certain number, recall EVERY time to get a certain number of issues
-// this is lighter client side since it doesn't man you have to pull data from the website every time
-// idea2: get all data into a data object to cache results (will be faster after first load!)
-// very heavy client side work
-//implement pagination button -> clickthrough using .onClick with JS button
-// NEED TO:
-// add className Modal to the objexta?
 let url = 'https://api.github.com/repos/walmartlabs/thorax/issues';
 let globalData;
 let lowerRangeOfIssues = 0;
